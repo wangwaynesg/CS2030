@@ -1,0 +1,6 @@
+/open Point.java
+/open Circle.java
+/open maxDiscCoverage.jsh
+createUnitCircle(new Point(0, 0), new Point(1, 0))
+createUnitCircle(new Point(0, 0), new Point(2, 0))
+/exit

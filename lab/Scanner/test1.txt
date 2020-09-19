@@ -1,0 +1,6 @@
+10
+10.0
+2
+I love CS2030
+Hello World
+5 a b c d e

@@ -1,0 +1,4 @@
+/open exponentiation.jsh
+exponentiation(1, 1)
+exponentiation(-5, 3)
+/exit
