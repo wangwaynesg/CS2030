@@ -7,6 +7,7 @@ public class LeaveEvent extends Event {
     }
 
     public Event execute() {
+        return this;
     }
 
     @Override

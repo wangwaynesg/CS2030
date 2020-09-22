@@ -3,6 +3,7 @@
 /open Event.java
 /open ArriveEvent.java
 /open ServeEvent.java
+/open DoneEvent.java
 /open LeaveEvent.java
 /open WaitEvent.java
 
@@ -24,3 +25,4 @@ new ArriveEvent(new Customer(1, 0.5), Arrays.asList(new Server(1, false, true, 5
 new ArriveEvent(new Customer(1, 0.5), Arrays.asList(new Server(1, false, true, 5.0), new Server(2, false, false, 10.0))).execute().execute().execute()
 new ArriveEvent(new Customer(1, 0.5), Arrays.asList(new Server(1, false, true, 5.0), new Server(2, false, true, 10.0))).execute() // both busy with waiting customer
 /exit
+

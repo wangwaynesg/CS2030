@@ -15,6 +15,13 @@ public class Server {
         this.nextAvailableTime = nextAvailableTime;
     }
 
+    public Server(int serverID) {
+        this.serverID = serverID;
+        this.isAvailable = true;
+        this.hasWaitingCustomer = false;
+        this.nextAvailableTime = 0;
+    }
+
     public int getServerID() {
         return this.serverID;
     }

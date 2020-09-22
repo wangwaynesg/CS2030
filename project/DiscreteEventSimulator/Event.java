@@ -12,6 +12,10 @@ public abstract class Event {
 
     public abstract Event execute();
 
+    public double getStartTime() {
+        return this.startTime;
+    }
+
     @Override
     public String toString() {
         return String.format("%.3f", this.startTime) + " " + this.customer.getCustomerID();

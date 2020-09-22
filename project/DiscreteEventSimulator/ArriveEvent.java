@@ -8,29 +8,34 @@ public class ArriveEvent extends Event {
     }
 
     public Event execute() {
+        
+        /*
         Server[] temp = new Server[servers.size()];
         servers.toArray(temp);
 
         for (int i = 0; i < temp.length; i++) {
-            // If server is available, return ServeEvent
             if (temp[i].getIsAvailable()) {
-                //temp[i] = temp[i].setIsAvailable(true);
-                return new ServeEvent(this.customer, Arrays.asList(temp));
-                // change server status 
-                // return new ServeEvent
-                // Maintain immutability 
+                temp[i] = temp[i].setIsAvailable(false);
+                servers = Arrays.toList(temp);
             }
-            if (temp[i].getHasWaitingCustomer()) {
-                return new LeaveEvent(this.customer, this.servers);
-            } else {
-                temp[i] = temp[i].setHasWaitingCustomer(true);
-                return new WaitEvent(this.customer, Arrays.asList(temp));
-            }
-            // If server is unavailable, return WaitEvent
-            // If server is unavailable and something waiting, return LeaveEvent
-        }
 
-        return this;
+
+        */
+        for (int i = 0; i < servers.size(); i++) {
+            System.out.println(servers.get(i));
+            if (servers.get(i).getIsAvailable()) {
+                Server temp = servers.get(i);
+                temp = temp.setIsAvailable(false);
+                temp = temp.setNextAvailableTime(Math.max(this.customer.getArrivalTime(), temp.getNextAvailableTime()));
+                return new ServeEvent(this.customer, Arrays.asList(temp));
+            }
+        }
+        for (int i = 0; i < servers.size(); i++) {
+            if (!servers.get(i).getHasWaitingCustomer()) {
+                return new WaitEvent(this.customer, Arrays.asList(servers.get(i).setHasWaitingCustomer(true)));
+            }
+        }
+        return new LeaveEvent(this.customer, this.servers);
     }
 
     @Override

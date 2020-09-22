@@ -1,27 +1,14 @@
 import java.util.List;
+import java.util.Arrays;
 
 public class ServeEvent extends Event {
     public ServeEvent(Customer customer, List<Server> servers) {
         super(customer, servers); 
-        for (Server server : servers) {
-            if (server.getIsAvailable()) {
-                this.startTime = Math.max(server.getNextAvailableTime(), customer.getArrivalTime());
-                break;
-            }
-        }
+        this.startTime = servers.get(0).getNextAvailableTime();
     }
 
-    public Event execute() {
-        Server[] temp = new Server[servers.size()];
-        servers.toArray(temp);
-
-        for (int i = 0; i < temp.length; i++) {
-            if (temp[i].getIsAvailable()) {
-                
-            }
-        }
-        
-        return this;
+    public Event execute() {     
+        return new DoneEvent(this.customer, Arrays.asList(this.servers.get(0).setNextAvailableTime(this.startTime + 1)));
     }
 
     @Override 
