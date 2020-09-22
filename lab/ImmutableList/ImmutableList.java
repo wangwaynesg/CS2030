@@ -1,6 +1,8 @@
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.function.Predicate;
+import java.util.function.Function;
 
 class ImmutableList<T> {
     private final List<T> list;
@@ -18,7 +20,36 @@ class ImmutableList<T> {
         this.list = new ArrayList<T>(list);
     }
 
-    public ImmutableList<T> filter(
+    public ImmutableList<T> filter(Predicate<? super T> p) {
+        ArrayList<T> arrayList = new ArrayList<>(this.list);
+        ArrayList<T> temp = new ArrayList<T>();
+        for (T t : arrayList) {
+            if (p.test(t)) {
+                temp.add(t);
+            }
+        }
+        return new ImmutableList<T>(temp);
+    }
+
+    /*
+    public <R, U> ImmutableList<R> map(Function<? super T, U> f) {
+        ArrayList<T> arrayList = new ArrayList<>(this.list);
+        ArrayList<R> temp = new ArrayList<>();
+        for (T t : arrayList) {
+            temp.add(f.apply(t));
+        }
+        return new ImmutableList<R>(temp);
+    }
+    */
+
+    public <R> ImmutableList<R> map(Function<? super T, ? extends R> f) {
+        ArrayList<T> arrayList = new ArrayList<>(this.list);
+        ArrayList<R> temp = new ArrayList<>();
+        for (T t : arrayList) {
+            temp.add(f.apply(t));
+        }
+        return new ImmutableList<R>(temp);
+    }
 
     public Object[] toArray() {
         ArrayList<Object> temp = new ArrayList<Object>(this.list);
