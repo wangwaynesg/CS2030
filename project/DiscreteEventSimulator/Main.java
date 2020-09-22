@@ -22,13 +22,14 @@ public class Main {
 
         while (sc.hasNextDouble()) {
             double arrivalTime = sc.nextDouble();
+            System.out.println(arrivalTime);
             queue.add(new ArriveEvent(new Customer(customerID++, arrivalTime), Arrays.asList(servers)));
         }
 
         while (queue.size() != 0) {
-            System.out.println("test");
+            System.out.println(queue);
             Event event = queue.remove();
-            System.out.println(event);
+            System.out.println(event + "\n\n");
             if (!(event instanceof LeaveEvent)) {
                 queue.add(event.execute());
             }

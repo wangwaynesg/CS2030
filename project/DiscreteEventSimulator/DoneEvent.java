@@ -8,7 +8,7 @@ public class DoneEvent extends Event {
     }
 
     public Event execute() {
-        return this;
+        return new LeaveEvent (this.customer, this.servers);
     }
 
     @Override

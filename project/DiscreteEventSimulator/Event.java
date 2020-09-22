@@ -2,7 +2,7 @@ import java.util.List;
 
 public abstract class Event {
     protected final Customer customer;
-    protected final List<Server> servers;
+    protected List<Server> servers;
     protected double startTime;
 
     public Event(Customer customer, List<Server> servers) {

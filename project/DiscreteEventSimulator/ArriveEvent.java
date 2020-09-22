@@ -8,31 +8,16 @@ public class ArriveEvent extends Event {
     }
 
     public Event execute() {
-        
-        /*
-        Server[] temp = new Server[servers.size()];
-        servers.toArray(temp);
-
-        for (int i = 0; i < temp.length; i++) {
-            if (temp[i].getIsAvailable()) {
-                temp[i] = temp[i].setIsAvailable(false);
-                servers = Arrays.toList(temp);
-            }
-
-
-        */
         for (int i = 0; i < servers.size(); i++) {
-            System.out.println(servers.get(i));
             if (servers.get(i).getIsAvailable()) {
-                Server temp = servers.get(i);
-                temp = temp.setIsAvailable(false);
-                temp = temp.setNextAvailableTime(Math.max(this.customer.getArrivalTime(), temp.getNextAvailableTime()));
-                return new ServeEvent(this.customer, Arrays.asList(temp));
+                servers.get(i).setNextAvailableTime(Math.max(this.customer.getArrivalTime(), servers.get(i).getNextAvailableTime()));
+                return new ServeEvent(this.customer, Arrays.asList(servers.get(i)));
             }
         }
         for (int i = 0; i < servers.size(); i++) {
             if (!servers.get(i).getHasWaitingCustomer()) {
-                return new WaitEvent(this.customer, Arrays.asList(servers.get(i).setHasWaitingCustomer(true)));
+                servers.get(i).setHasWaitingCustomer(true);
+                return new WaitEvent(this.customer, Arrays.asList(servers.get(i)));
             }
         }
         return new LeaveEvent(this.customer, this.servers);

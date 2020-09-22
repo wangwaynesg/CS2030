@@ -8,7 +8,8 @@ public class ServeEvent extends Event {
     }
 
     public Event execute() {     
-        return new DoneEvent(this.customer, Arrays.asList(this.servers.get(0).setNextAvailableTime(this.startTime + 1)));
+        this.servers.get(0).setNextAvailableTime(this.startTime + 1);
+        return new DoneEvent(this.customer, Arrays.asList(this.servers.get(0)));
     }
 
     @Override 

@@ -4,9 +4,9 @@
  */
 public class Server {
     private final int serverID;
-    private final boolean isAvailable;
-    private final boolean hasWaitingCustomer;
-    private final double nextAvailableTime;
+    private boolean isAvailable;
+    private boolean hasWaitingCustomer;
+    private double nextAvailableTime;
 
     public Server(int serverID, boolean isAvailable, boolean hasWaitingCustomer, double nextAvailableTime) {
         this.serverID = serverID;
@@ -38,16 +38,16 @@ public class Server {
         return this.nextAvailableTime;
     }
 
-    public Server setIsAvailable(boolean bool) {
-        return new Server(this.serverID, bool, this.hasWaitingCustomer, this.nextAvailableTime);
+    public void setIsAvailable(boolean bool) {
+        this.isAvailable = bool;
     }
 
-    public Server setHasWaitingCustomer(boolean bool) {
-        return new Server(this.serverID, this.isAvailable, bool, this.nextAvailableTime);
+    public void setHasWaitingCustomer(boolean bool) {
+        this.hasWaitingCustomer = bool;
     }
 
-    public Server setNextAvailableTime(double nextAvailableTime) {
-        return new Server(this.serverID, this.isAvailable, this.hasWaitingCustomer, nextAvailableTime);
+    public void setNextAvailableTime(double nextAvailableTime) {
+        this.nextAvailableTime = nextAvailableTime;
     }
 
     @Override
