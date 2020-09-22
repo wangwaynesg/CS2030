@@ -19,6 +19,30 @@ public class Server {
         return this.serverID;
     }
 
+    public boolean getIsAvailable() {
+        return this.isAvailable;
+    }
+
+    public boolean getHasWaitingCustomer() {
+        return this.hasWaitingCustomer;
+    }
+
+    public double getNextAvailableTime() {
+        return this.nextAvailableTime;
+    }
+
+    public Server setIsAvailable(boolean bool) {
+        return new Server(this.serverID, bool, this.hasWaitingCustomer, this.nextAvailableTime);
+    }
+
+    public Server setHasWaitingCustomer(boolean bool) {
+        return new Server(this.serverID, this.isAvailable, bool, this.nextAvailableTime);
+    }
+
+    public Server setNextAvailableTime(double nextAvailableTime) {
+        return new Server(this.serverID, this.isAvailable, this.hasWaitingCustomer, nextAvailableTime);
+    }
+
     @Override
     public String toString() {
         if (this.isAvailable) {

@@ -3,6 +3,10 @@
 /open Event.java
 /open ArriveEvent.java
 /open ServeEvent.java
+/open LeaveEvent.java
+/open WaitEvent.java
+
+
 
 new ArriveEvent(new Customer(1, 0.5), Arrays.asList(new Server(1, true, false, 0))) // server is available
 new ArriveEvent(new Customer(1, 0.5), Arrays.asList(new Server(1, true, false, 0))).execute()
