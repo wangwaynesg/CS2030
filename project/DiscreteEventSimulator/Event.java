@@ -1,9 +1,18 @@
 import java.util.List;
+import java.util.Comparator;
+import java.lang.Comparable;
 
-public abstract class Event {
+public abstract class Event implements Comparable<Event> {
+    protected int eventType;
     protected final Customer customer;
     protected List<Server> servers;
     protected double startTime;
+
+    public static final int EVENT_WAIT = 0;
+    public static final int EVENT_ARRIVE = 1;
+    public static final int EVENT_SERVE = 2;
+    public static final int EVENT_LEAVE = 3;
+    public static final int EVENT_DONE = 4;
 
     public Event(Customer customer, List<Server> servers) {
         this.customer = customer;
@@ -14,6 +23,34 @@ public abstract class Event {
 
     public double getStartTime() {
         return this.startTime;
+    }
+
+    /*
+    @Override
+    public int compare(Event e1, Event e2) {
+        if (e1.getStartTime() < e2.getStartTime()) {
+            return -1;
+        }
+        if (e1.getStartTime() > e2.getStartTime()) {
+            return 1;
+        }
+        return 0;
+    }
+    */
+
+    @Override
+    public int compareTo(Event e) {
+        if (this.startTime < e.getStartTime()) {
+            return -1;
+        }
+        if (this.startTime > e.getStartTime()) {
+            return 1;
+        }
+        if (this.eventType == e.eventType) {
+            return this.customer.getCustomerID() - e.customer.getCustomerID();
+        } else {
+            return e.eventType - this.eventType;
+        }
     }
 
     @Override

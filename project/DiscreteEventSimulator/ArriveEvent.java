@@ -5,11 +5,13 @@ public class ArriveEvent extends Event {
     public ArriveEvent(Customer customer, List<Server> servers) {
         super(customer, servers);
         this.startTime = customer.getArrivalTime();
+        this.eventType = EVENT_ARRIVE;
     }
 
     public Event execute() {
         for (int i = 0; i < servers.size(); i++) {
             if (servers.get(i).getIsAvailable()) {
+                servers.get(i).setIsAvailable(false);
                 servers.get(i).setNextAvailableTime(Math.max(this.customer.getArrivalTime(), servers.get(i).getNextAvailableTime()));
                 return new ServeEvent(this.customer, Arrays.asList(servers.get(i)));
             }
