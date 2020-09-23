@@ -25,18 +25,9 @@ public abstract class Event implements Comparable<Event> {
         return this.startTime;
     }
 
-    /*
-    @Override
-    public int compare(Event e1, Event e2) {
-        if (e1.getStartTime() < e2.getStartTime()) {
-            return -1;
-        }
-        if (e1.getStartTime() > e2.getStartTime()) {
-            return 1;
-        }
-        return 0;
+    public double getCustomerArrivalTime() {
+        return this.customer.getArrivalTime();
     }
-    */
 
     @Override
     public int compareTo(Event e) {

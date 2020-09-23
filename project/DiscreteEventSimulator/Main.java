@@ -1,6 +1,5 @@
 import java.util.Scanner;
 import java.util.PriorityQueue;
-import java.util.Comparator;
 import java.util.Arrays;
 import java.util.List;
 
@@ -18,28 +17,38 @@ public class Main {
         }
         List<Server> list = Arrays.asList(servers);
 
-        //Comparator<Event> comparator = new EventComparator();
         PriorityQueue<Event> queue = new PriorityQueue<Event>();
 
         int customerID = 1;
 
         while (sc.hasNextDouble()) {
             double arrivalTime = sc.nextDouble();
-            System.out.println(arrivalTime);
             Event event = new ArriveEvent(new Customer(customerID++, arrivalTime), list);
             queue.add(event);
         }
 
-        while (queue.size() != 0) {
-//            System.out.println(queue);
+        int customersServed = 0;
+        int customersLeft = 0;
+        double totalWaitingTime = 0;
 
+        while (queue.size() != 0) {
             Event event = queue.remove();
-            System.out.println(event);
-            if (event instanceof DoneEvent || event instanceof LeaveEvent) {
+            System.out.println(event);            
+            if (event instanceof DoneEvent) {
                 event.execute();
+                customersServed++;
+            } else if (event instanceof LeaveEvent) {
+                event.execute();
+                customersLeft++;
             } else {
+                if (event instanceof ServeEvent) {
+                    totalWaitingTime += event.getStartTime() - event.getCustomerArrivalTime();
+                }
                 queue.add(event.execute());
             }
         }
+
+        double averageWaitingTime = totalWaitingTime / customersServed;
+        System.out.println("[" + String.format("%.3f", averageWaitingTime) + " " + customersServed + " " + customersLeft + "]");
     }
 }
