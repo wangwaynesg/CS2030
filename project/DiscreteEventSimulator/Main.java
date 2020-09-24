@@ -1,10 +1,10 @@
-import cs2030.simulator.customer.Customer;
-import cs2030.simulator.server.Server;
-import cs2030.simulator.event.Event;
-import cs2030.simulator.event.ArriveEvent;
-import cs2030.simulator.event.DoneEvent;
-import cs2030.simulator.event.LeaveEvent;
-import cs2030.simulator.event.ServeEvent;
+import cs2030.simulator.Customer;
+import cs2030.simulator.Server;
+import cs2030.simulator.Event;
+import cs2030.simulator.ArriveEvent;
+import cs2030.simulator.DoneEvent;
+import cs2030.simulator.LeaveEvent;
+import cs2030.simulator.ServeEvent;
 
 import java.util.Arrays;
 import java.util.List;
@@ -20,7 +20,7 @@ import java.util.Scanner;
 public class Main {
     /**
      * Creates a <code>List</code> of <code>Server</code> based on user input.
-     * @param numOfServers
+     * @param numOfServers number of servers from user input
      * @return <code>List<Server></code>
      */
     private static List<Server> getServers(int numOfServers) {
@@ -34,9 +34,9 @@ public class Main {
 
     /**
      * Prints the statistics of the system.
-     * @param customersServed
-     * @param customersLeft
-     * @param totalWaitingTime
+     * @param customersServed number of customers served
+     * @param customersLeft number of customers left
+     * @param totalWaitingTime total waiting time for customers
      */
     private static void printStatistics(int customersServed, int customersLeft, double totalWaitingTime) {
         double averageWaitingTime = totalWaitingTime / customersServed;
@@ -45,7 +45,7 @@ public class Main {
 
     /**
      * Main execution loop of the program.
-     * @param args
+     * @param args should be null
      */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);

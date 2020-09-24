@@ -1,4 +1,4 @@
-package cs2030.simulator.customer;
+package cs2030.simulator;
 
 /**
  * Customer represents each arriving customer that is tagged with a

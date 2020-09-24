@@ -1,7 +1,4 @@
-package cs2030.simulator.event;
-
-import cs2030.simulator.customer.Customer;
-import cs2030.simulator.server.Server;
+package cs2030.simulator;
 
 import java.util.List;
 import java.lang.Comparable;

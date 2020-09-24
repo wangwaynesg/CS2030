@@ -1,4 +1,4 @@
-package cs2030.simulator.server;
+package cs2030.simulator;
 
 /**
  * Server represents each server that has a <code>serverID</code>, <code>isAvailable</code> status,
