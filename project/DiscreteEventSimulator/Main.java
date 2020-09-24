@@ -1,29 +1,65 @@
-import java.util.Scanner;
-import java.util.PriorityQueue;
+import cs2030.simulator.customer.Customer;
+import cs2030.simulator.server.Server;
+import cs2030.simulator.event.Event;
+import cs2030.simulator.event.ArriveEvent;
+import cs2030.simulator.event.DoneEvent;
+import cs2030.simulator.event.LeaveEvent;
+import cs2030.simulator.event.ServeEvent;
+
 import java.util.Arrays;
 import java.util.List;
+import java.util.PriorityQueue;
+import java.util.Scanner;
 
-
+/**
+ * Main class for simulating events.
+ *
+ * @author Wang Wayne
+ * @since 24 September 2020
+ */
 public class Main {
+    /**
+     * Creates a <code>List</code> of <code>Server</code> based on user input.
+     * @param numOfServers
+     * @return <code>List<Server></code>
+     */
+    private static List<Server> getServers(int numOfServers) {
+        Server[] servers = new Server[numOfServers];
+
+        for (int i = 0; i < numOfServers; i++) {
+            servers[i] = new Server(i + 1);
+        }
+        return Arrays.asList(servers);
+    }
+
+    /**
+     * Prints the statistics of the system.
+     * @param customersServed
+     * @param customersLeft
+     * @param totalWaitingTime
+     */
+    private static void printStatistics(int customersServed, int customersLeft, double totalWaitingTime) {
+        double averageWaitingTime = totalWaitingTime / customersServed;
+        System.out.println("[" + String.format("%.3f", averageWaitingTime) + " " + customersServed + " " + customersLeft + "]");
+    }
+
+    /**
+     * Main execution loop of the program.
+     * @param args
+     */
     public static void main(String[] args) {
         Scanner sc = new Scanner(System.in);
 
         int numOfServers = sc.nextInt();
-        Server[] servers = new Server[numOfServers];
-        
-        int serverID = 1;
-        for (int i = 0; i < numOfServers; i++) {
-            servers[i] = new Server(serverID++);
-        }
-        List<Server> list = Arrays.asList(servers);
+        List<Server> servers = getServers(numOfServers);
 
-        PriorityQueue<Event> queue = new PriorityQueue<Event>();
+        PriorityQueue<Event> queue = new PriorityQueue<>();
 
         int customerID = 1;
 
         while (sc.hasNextDouble()) {
             double arrivalTime = sc.nextDouble();
-            Event event = new ArriveEvent(new Customer(customerID++, arrivalTime), list);
+            Event event = new ArriveEvent(new Customer(customerID++, arrivalTime), servers);
             queue.add(event);
         }
 
@@ -33,7 +69,7 @@ public class Main {
 
         while (queue.size() != 0) {
             Event event = queue.remove();
-            System.out.println(event);            
+            System.out.println(event);
             if (event instanceof DoneEvent) {
                 event.execute();
                 customersServed++;
@@ -47,8 +83,6 @@ public class Main {
                 queue.add(event.execute());
             }
         }
-
-        double averageWaitingTime = totalWaitingTime / customersServed;
-        System.out.println("[" + String.format("%.3f", averageWaitingTime) + " " + customersServed + " " + customersLeft + "]");
+        printStatistics(customersServed, customersLeft, totalWaitingTime);
     }
 }

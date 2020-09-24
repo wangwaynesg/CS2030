@@ -1,5 +1,13 @@
+package cs2030.simulator.event;
+
+import cs2030.simulator.customer.Customer;
+import cs2030.simulator.server.Server;
+
 import java.util.List;
 
+/**
+ * Represents the event where a customer leaves.
+ */
 public class LeaveEvent extends Event {
     public LeaveEvent(Customer customer, List<Server> servers) {
         super(customer, servers);

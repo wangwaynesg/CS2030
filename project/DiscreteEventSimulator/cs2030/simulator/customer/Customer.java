@@ -1,6 +1,8 @@
+package cs2030.simulator.customer;
+
 /**
- * Customer is an immutable class to represent each arriving customer that is tagged with a
- * <code>int customerID</code> and a <code>double arriavlTime</code>.
+ * Customer represents each arriving customer that is tagged with a
+ * <code>customerID</code> and an <code>arrivalTime</code>.
  */
 public class Customer {
     private final int customerID;

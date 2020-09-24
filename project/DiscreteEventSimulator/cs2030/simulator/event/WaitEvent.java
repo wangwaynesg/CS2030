@@ -1,13 +1,26 @@
-import java.util.List;
-import java.util.Arrays;
+package cs2030.simulator.event;
 
-public class WaitEvent extends Event {
+import cs2030.simulator.customer.Customer;
+import cs2030.simulator.server.Server;
+
+import java.util.Arrays;
+import java.util.List;
+
+/**
+ * Represents the waiting of a customer.
+ */
+public class WaitEvent extends Event{
     public WaitEvent(Customer customer, List<Server> servers) {
         super(customer, servers);
         this.startTime = customer.getArrivalTime();
         this.eventType = EVENT_WAIT;
     }
 
+    /**
+     * set the <code>nextAvailableTime</code> to the max of the customer's
+     * <code>arrivalTime</code> and the server's <code>nextAvailableTime</code>.
+     * @return <code>ServeEvent</code>
+     */
     public Event execute() {
         servers.get(0).setHasWaitingCustomer(true);
         servers.get(0).setNextAvailableTime(Math.max(this.customer.getArrivalTime(), servers.get(0).getNextAvailableTime()));
