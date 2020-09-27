@@ -5,6 +5,7 @@ import cs2030.simulator.ArriveEvent;
 import cs2030.simulator.DoneEvent;
 import cs2030.simulator.LeaveEvent;
 import cs2030.simulator.ServeEvent;
+import cs2030.simulator.WaitEvent;
 
 import java.util.Arrays;
 import java.util.List;
