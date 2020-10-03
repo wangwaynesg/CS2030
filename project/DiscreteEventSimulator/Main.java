@@ -7,8 +7,8 @@ import cs2030.simulator.LeaveEvent;
 import cs2030.simulator.ServeEvent;
 import cs2030.simulator.WaitEvent;
 
-import java.util.Arrays;
 import java.util.List;
+import java.util.Arrays;
 import java.util.PriorityQueue;
 import java.util.Scanner;
 
@@ -79,8 +79,9 @@ public class Main {
                 customersLeft++;
             } else {
                 if (event instanceof ServeEvent) {
-                    totalWaitingTime += event.getStartTime() - event.getCustomerArrivalTime();
+                    totalWaitingTime += event.getStartTime() - event.getCustomer().getArrivalTime();
                 }
+
                 queue.add(event.execute());
             }
         }

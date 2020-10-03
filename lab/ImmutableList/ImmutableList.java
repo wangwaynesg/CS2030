@@ -31,17 +31,6 @@ class ImmutableList<T> {
         return new ImmutableList<T>(temp);
     }
 
-    /*
-    public <R, U> ImmutableList<R> map(Function<? super T, U> f) {
-        ArrayList<T> arrayList = new ArrayList<>(this.list);
-        ArrayList<R> temp = new ArrayList<>();
-        for (T t : arrayList) {
-            temp.add(f.apply(t));
-        }
-        return new ImmutableList<R>(temp);
-    }
-    */
-
     public <R> ImmutableList<R> map(Function<? super T, ? extends R> f) {
         ArrayList<T> arrayList = new ArrayList<>(this.list);
         ArrayList<R> temp = new ArrayList<>();
@@ -121,5 +110,16 @@ class ImmutableList<T> {
     @Override
     public String toString() {
         return list.toString();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj) {
+            return true;
+        } else if (obj instanceof ImmutableList) {
+            return this.getList().equals(((ImmutableList) obj).getList());
+        } else {
+            return false;
+        }
     }
 }

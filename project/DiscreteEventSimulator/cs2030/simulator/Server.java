@@ -6,9 +6,9 @@ package cs2030.simulator;
  */
 public class Server {
     private final int serverID;
-    private boolean isAvailable;
-    private boolean hasWaitingCustomer;
-    private double nextAvailableTime;
+    private final boolean isAvailable;
+    private final boolean hasWaitingCustomer;
+    private final double nextAvailableTime;
 
     /**
      * Constructor for creating a new Server with all the respective 4 attributes.
@@ -51,16 +51,16 @@ public class Server {
         return this.nextAvailableTime;
     }
 
-    public void setIsAvailable(boolean bool) {
-        this.isAvailable = bool;
+    public Server setIsAvailable(boolean bool) {
+        return new Server(this.serverID, bool, this.hasWaitingCustomer, this.nextAvailableTime);
     }
 
-    public void setHasWaitingCustomer(boolean bool) {
-        this.hasWaitingCustomer = bool;
+    public Server setHasWaitingCustomer(boolean bool) {
+        return new Server(this.serverID, this.isAvailable, bool, this.nextAvailableTime);
     }
 
-    public void setNextAvailableTime(double nextAvailableTime) {
-        this.nextAvailableTime = nextAvailableTime;
+    public Server setNextAvailableTime(double time) {
+        return new Server(this.serverID, this.isAvailable, this.hasWaitingCustomer, time);
     }
 
     @Override

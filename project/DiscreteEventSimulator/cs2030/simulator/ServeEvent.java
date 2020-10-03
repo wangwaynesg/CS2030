@@ -1,16 +1,20 @@
 package cs2030.simulator;
 
-import java.util.Arrays;
 import java.util.List;
 
 /**
  * Represents the serving of a customer.
  */
-public class ServeEvent extends Event {
-    public ServeEvent(Customer customer, List<Server> servers) {
+public class ServeEvent extends Event{
+    private final double startTime;
+    private final int eventType;
+    private final int index;
+
+    public ServeEvent(Customer customer, List<Server> servers, int index) {
         super(customer, servers);
-        this.startTime = servers.get(0).getNextAvailableTime();
-        this.eventType = EVENT_SERVE;
+        this.startTime = servers.get(index).getNextAvailableTime();
+        this.eventType = 2;
+        this.index = index;
     }
 
     /**
@@ -18,14 +22,27 @@ public class ServeEvent extends Event {
      * and add 1 to the <code>nextAvailableTime</code>.
      * @return <code>DoneEvent</code>
      */
+    @Override
     public Event execute() {
-        this.servers.get(0).setHasWaitingCustomer(false);
-        this.servers.get(0).setNextAvailableTime(this.startTime + 1);
-        return new DoneEvent(this.customer, Arrays.asList(this.servers.get(0)));
+        Server temp = this.getServers().get(index);
+        temp = temp.setHasWaitingCustomer(false);
+        temp = temp.setNextAvailableTime(this.startTime + 1);
+        this.getServers().set(index, temp);
+        return new DoneEvent(this.getCustomer(), this.getServers(), index);
+    }
+
+    @Override
+    public double getStartTime() {
+        return this.startTime;
+    }
+
+    @Override
+    public int getEventType() {
+        return this.eventType;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " served by " + servers.get(0).getServerID();
+        return super.toString() + " served by " + this.getServers().get(index).getServerID();
     }
 }
