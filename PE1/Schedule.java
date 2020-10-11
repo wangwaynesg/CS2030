@@ -16,11 +16,19 @@ public class Schedule {
 
     public Schedule add(Class c) {
         ArrayList<Class> temp = new ArrayList<Class>();
+        boolean clash = false;
+        
         for (Class c1 : this.classes) {
             temp.add(c1);
+            if (c.clashWith(c1)) {
+                clash = true;
+            }
         }
 
-        temp.add(c);
+        if (!clash) {
+            temp.add(c);
+        }
+
         ClassComparator classComparator = new ClassComparator();
         Collections.sort(temp, classComparator);
         return new Schedule(temp);

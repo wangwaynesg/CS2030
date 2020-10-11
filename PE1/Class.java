@@ -45,44 +45,5 @@ public abstract class Class {
         return this.venue.equals(c.getVenue());
     }
 
-    public boolean clashWith(Class c) {
-        if (this instanceof Tutorial) {
-            if (c instanceof Tutorial) {
-                if ((this.getStartTime() + 1) > c.getStartTime() && (this.getStartTime() - 1) < c.getStartTime()) {
-                    return this.hasSameInstructor(c) || this.hasSameVenue(c);
-                } else {
-                    return false;
-                }
-            }
-
-            if (c instanceof Lecture) {
-                return this.hasSameModule(c) &&
-                        ((this.getStartTime() + 2) > c.getStartTime() && (this.getStartTime() - 1) < c.getStartTime());
-            }
-        } else if (this instanceof Lecture) {
-            if (c instanceof Lecture) {
-                return /*this.hasSameModule(c) &&*/ this.hasSameVenue(c) &&
-                        ((this.getStartTime() + 2) > c.getStartTime() && (this.getStartTime() - 2) < c.getStartTime());
-            }
-            if (c instanceof Tutorial) {
-                return this.hasSameModule(c) &&
-                        ((c.getStartTime() + 2) > this.getStartTime() && (c.getStartTime() - 1) < this.getStartTime());
-            }
-        }
-
-        return false;
-    }
-
-    /*
-    @Override
-    public String toString() {
-        if (this instanceof Lecture) {
-            return module + " L" + id + " @ " + venue + " [" + instructor.toString() + "] " + startTime + "--" + (startTime + 2);
-        }
-        if (this instanceof Tutorial) {
-            return module + " T" + id + " @ " + venue + " [" + instructor.toString() + "] " + startTime + "--" + (startTime + 1);
-        }
-        return "";
-    }
-    */
+    public abstract boolean clashWith(Class c);
 }
