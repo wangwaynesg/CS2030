@@ -1,3 +1,3 @@
 public interface Keyable {
-    String getKey();
+    public String getKey();
 }

@@ -17,6 +17,6 @@ public class Assessment implements Keyable {
 
     @Override
     public String toString() {
-        return "{" + this.component + ", " + this.grade + "}";
+        return "{" + this.component + ": " + this.grade + "}";
     }
 }
