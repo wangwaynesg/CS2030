@@ -9,17 +9,19 @@ public class Lecture extends Class {
     public int getDuration() {
         return this.duration;
     }
-	
-	@Override
-	public boolean clashWith(Class c) {
-		if (c instanceof Lecture) {
-            boolean lectureTimeClash = !((this.getStartTime() + 2) <= c.getStartTime() &&
-                    (this.getStartTime() - 2) > c.getStartTime());
-			return this.hasSameVenue(c) && lectureTimeClash;
-		} else {
-			return this.hasSameModule(c) &&
-                    ((c.getStartTime() + 2) > this.getStartTime() && 
-					(c.getStartTime() - 1) < this.getStartTime());
-		}
-	}
+
+    public int getEndTime() {
+        return this.getStartTime() + 2;
+    }
+
+    @Override
+    public boolean clashWith(Class c) {
+        boolean timeClash = (c.getStartTime() >= this.getStartTime() && c.getStartTime() < this.getEndTime()) ||
+                (this.getStartTime() >= c.getStartTime() && this.getStartTime() < c.getEndTime());
+        if (c instanceof Lecture) {
+            return this.hasSameVenue(c) && timeClash;
+        } else {
+            return this.hasSameModule(c) && timeClash;
+        }
+    }
 }

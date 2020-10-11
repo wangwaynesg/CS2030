@@ -44,7 +44,7 @@ public class Schedule {
                     this.classes.get(i).getVenue() + " [" +
                     this.classes.get(i).getInstructor().toString() + "] " +
                     this.classes.get(i).getStartTime() + "--" +
-                    String.format("%d", this.classes.get(i).getStartTime() + 2);
+                    this.classes.get(i).getEndTime();
             }
 
             if (this.classes.get(i) instanceof Tutorial) {
@@ -53,7 +53,7 @@ public class Schedule {
                     this.classes.get(i).getVenue() + " [" +
                     this.classes.get(i).getInstructor().toString() + "] " +
                     this.classes.get(i).getStartTime() + "--" +
-                    String.format("%d", this.classes.get(i).getStartTime() + 1);
+                    this.classes.get(i).getEndTime();
             }
             
             if (!(i == this.classes.size() - 1)) {

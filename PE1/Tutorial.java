@@ -9,19 +9,23 @@ public class Tutorial extends Class {
     public int getDuration() {
         return this.duration;
     }
-	
-	@Override
-	public boolean clashWith(Class c) {
-		if (c instanceof Tutorial) {
-			if ((this.getStartTime() + 1) > c.getStartTime() && (this.getStartTime() - 1) < c.getStartTime()) {
-                    return this.hasSameInstructor(c) || this.hasSameVenue(c);
-                } else {
-                    return false;
-                }
-		} else {
-			return this.hasSameModule(c) &&
-                    ((this.getStartTime() + 2) > c.getStartTime() && 
-					(this.getStartTime() - 1) < c.getStartTime());
-		}
-	}
+
+    public int getEndTime() {
+        return this.getStartTime() + 1;
+    }
+
+    @Override
+    public boolean clashWith(Class c) {
+        boolean timeClash = (this.getStartTime() >= c.getStartTime() && this.getStartTime() < c.getEndTime()) || 
+                (c.getStartTime() >= this.getStartTime() && c.getStartTime() < this.getEndTime());
+        if (c instanceof Tutorial) {
+            if (timeClash) {
+                return this.hasSameInstructor(c) || this.hasSameVenue(c);
+            } else {
+                return false;
+            }
+        } else {
+            return this.hasSameModule(c) && timeClash;
+        }
+    }
 }

@@ -46,4 +46,6 @@ public abstract class Class {
     }
 
     public abstract boolean clashWith(Class c);
+
+    public abstract int getEndTime();
 }
