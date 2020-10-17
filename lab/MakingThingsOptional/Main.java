@@ -8,10 +8,10 @@ public class Main {
         Roster roster = new Roster("test");
 
         String[] arguments = new String[4];
-        String currentStudent = null;
-        String currentModule = null;
-        Module module = null;
-        Student student = null;
+        String currentStudent = "";
+        String currentModule = "";
+        Module module = new Module("temp");
+        Student student = new Student("temp");
 
         if (N > 0) {
             arguments = sc.nextLine().split("\\s+|\\t+");
