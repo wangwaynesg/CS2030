@@ -39,7 +39,7 @@ public class Server {
         return this.identifier;
     }
 
-    public boolean getIsAvailable() {
+    public boolean isAvailable() {
         return this.isAvailable;
     }
 

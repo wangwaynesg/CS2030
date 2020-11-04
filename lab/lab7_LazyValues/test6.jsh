@@ -2,7 +2,7 @@ UnaryOperator<Integer> op = x -> {
 System.out.println("op called");
 return x + 1;
 }
-LazyList<Integer> list = LazyList.generate(10000, 0, op)
+LazyList<Integer> list = LazyList.generate(100, 0, op)
 list.get(0)
 list.get(5)
 list.indexOf(2)

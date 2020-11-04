@@ -4,19 +4,36 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.function.Predicate;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 public class Shop {
     private final List<Server> servers;
 
     public Shop(int n) {
         servers = new ArrayList<>();
-        for (int i = 1; i <= n; i++) {
-            servers.add(new Server(i));
-        }
+        IntStream.rangeClosed(1, n)
+                .forEach(x -> servers.add(new Server(x)));
     }
 
     public Shop(List<Server> servers) {
         this.servers = servers;
+    }
+
+    public Optional<Server> find(Predicate<Server> predicate) {
+        return servers.stream()
+                .filter(predicate)
+                .findFirst();
+    }
+
+    public Shop replace(Server server) {
+        List<Server> temp = new ArrayList<>(servers);
+
+        temp = temp.stream()
+                .map(x -> server.getIdentifier() == (x.getIdentifier()) ? server : x)
+                .collect(Collectors.toList());
+
+        return new Shop(temp);
     }
 
     @Override
