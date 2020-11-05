@@ -1,12 +1,11 @@
 import java.util.List;
-:q
-:wq!
 import java.util.function.UnaryOperator;
 import java.util.stream.Stream;
 import java.util.stream.Collectors;
 import java.lang.Comparable;
 import java.util.stream.IntStream;
 import java.util.function.Supplier;
+import java.util.Optional;
 
 public class LazyList<T extends Comparable<T>> {
     private final List<Lazy<T>> list;
@@ -17,8 +16,7 @@ public class LazyList<T extends Comparable<T>> {
 
     public static <T extends Comparable<T>> LazyList<T> generate(int n, T seed, UnaryOperator<T> f) {
         return new LazyList<T>(
-                Stream.iterate(seed, f)
-                .map(Lazy::of)
+                Stream.iterate(Lazy.of(seed), x -> x.map(f))
                 .limit(n)
                 .collect(Collectors.toList())
                 );
@@ -29,6 +27,16 @@ public class LazyList<T extends Comparable<T>> {
     }
 
     public T get(int i) {
-        return this.list.get(i).get();
+        return IntStream.rangeClosed(0, i)
+            .mapToObj(x -> list.get(x).get())
+            .reduce((first, second) -> second)
+            .orElseThrow();
+    }
+
+    public int indexOf(T t) {
+        return IntStream.range(0, list.size())
+            .filter(x -> list.get(x).get().equals(t))
+            .findFirst()
+            .orElse(-1);
     }
 }
