@@ -1,27 +1,86 @@
+import cs2030.simulator.ArriveEvent;
+import cs2030.simulator.Customer;
+import cs2030.simulator.DoneEvent;
+import cs2030.simulator.Event;
+import cs2030.simulator.LeaveEvent;
 import cs2030.simulator.Pair;
-import cs2030.simulator.Server;
+import cs2030.simulator.RNG;
+import cs2030.simulator.ServeEvent;
 import cs2030.simulator.Shop;
 
-import java.util.List;
+import java.util.PriorityQueue;
 
 public class Main {
-    public static void main(String args[]) {
-        new Shop(2);
-        Shop shops = new Shop(List.of(new Server(1, true, false, 0), new Server(2, false, false, 1.0)));
-        System.out.println(shops);
-        System.out.println(shops.find(x -> x.isAvailable()));
-        System.out.println(new Shop(2).find(x -> x.isAvailable()));
-        shops.find(x -> x.isAvailable()).ifPresent(System.out::println);
-        Server s = new Server(1, false, false, 2.0);
-        System.out.println(shops.replace(s));
-        System.out.println(shops.replace(s).find(x -> x.isAvailable()));
-        System.out.println(shops);
+    private static void printStatistics(int customersServed, int customersLeft, double totalWaitingTime) {
+        if (customersServed == 0) {
+            System.out.println("[0.000 " + customersServed + " " + customersLeft + "]");
+        } else {
+            double averageWaitingTime = totalWaitingTime / customersServed;
+            System.out.println("[" + String.format("%.3f", averageWaitingTime) + " " + customersServed + " " + customersLeft + "]");
+        }
+    }
 
-        Pair<Integer,String> pair1 = Pair.of(1, "one");
-        System.out.println(pair1.first());
-        System.out.println(pair1.second());
-        Pair<Long,Long> pair2 = Pair.of(0L, 100L);
-        System.out.println(pair2.first());
-        System.out.println(pair2.second());
+    public static void main(String args[]) {
+        int seed;
+        int numOfServers;
+        int numOfCustomers;
+        int maxQueue;
+        double arrivalRate;
+        double serviceRate;
+
+        // Statistics
+        int customersServed = 0;
+        int customersLeft = 0;
+        double totalWaitingTime = 0;
+
+        // Parse input
+        switch (args.length) {
+        case 6:
+            seed = Integer.parseInt(args[0]);
+            numOfServers = Integer.parseInt(args[1]);
+            maxQueue = Integer.parseInt(args[2]);
+            numOfCustomers = Integer.parseInt(args[3]);
+            arrivalRate = Double.parseDouble(args[4]);
+            serviceRate = Double.parseDouble(args[5]);
+            break;
+        default:
+            seed = Integer.parseInt(args[0]);
+            numOfServers = Integer.parseInt(args[1]);
+            maxQueue = 1;
+            numOfCustomers = Integer.parseInt(args[2]);
+            arrivalRate = Double.parseDouble(args[3]);
+            serviceRate = Double.parseDouble(args[4]);
+        }
+
+        RNG rng = new RNG(seed, arrivalRate, serviceRate, 1.0);
+        PriorityQueue<Event> pq = new PriorityQueue<>();
+
+        double arrivalTime = 0;
+        for (int i = 1; i <= numOfCustomers; i++) {
+            pq.add(new ArriveEvent(new Customer(i, arrivalTime), rng));
+            arrivalTime += rng.genInterArrivalTime();
+        }
+
+        Shop shop = new Shop(numOfServers, maxQueue);
+
+        while(pq.size() > 0) {
+            Event event = pq.poll();
+            System.out.println(event);
+
+            if (event instanceof DoneEvent) {
+                customersServed++;
+            } else if (event instanceof LeaveEvent) {
+                customersLeft++;
+            } else if (event instanceof ServeEvent) {
+                totalWaitingTime += event.getStartTime() - event.getCustomer().getArrivalTime();
+            }
+
+            Pair<Shop, Event> pair = event.execute(shop);
+            if (pair.second() != null) {
+                pq.add(pair.second());
+            }
+            shop = pair.first();
+        }
+        printStatistics(customersServed, customersLeft, totalWaitingTime);
     }
 }

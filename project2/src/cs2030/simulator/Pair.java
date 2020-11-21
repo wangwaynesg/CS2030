@@ -10,7 +10,7 @@ public class Pair<T, U> {
     }
 
     public static <T, U> Pair<T, U> of(T t, U u) {
-        return new Pair(t, u);
+        return new Pair<T, U>(t, u);
     }
 
     public T first() {

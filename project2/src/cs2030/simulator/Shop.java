@@ -13,7 +13,13 @@ public class Shop {
     public Shop(int n) {
         servers = new ArrayList<>();
         IntStream.rangeClosed(1, n)
-                .forEach(x -> servers.add(new Server(x)));
+                .forEach(x -> servers.add(new Server(x, 1)));
+    }
+
+    public Shop(int n, int maxQueue) {
+        servers = new ArrayList<>();
+        IntStream.rangeClosed(1, n)
+                .forEach(x -> servers.add(new Server(x, maxQueue)));
     }
 
     public Shop(List<Server> servers) {

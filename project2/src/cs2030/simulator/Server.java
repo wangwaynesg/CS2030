@@ -9,19 +9,25 @@ public class Server {
     private final boolean isAvailable;
     private final boolean hasWaitingCustomer;
     private final double nextAvailableTime;
+    private final int maxQueue;
+    private final int currentQueue;
 
     /**
-     * Constructor for creating a new Server with all the respective 4 attributes.
+     * Constructor for creating a new Server with all the respective 6 attributes.
      * @param identifier server ID of the server
      * @param isAvailable status of whether the server is available to accept a new customer
      * @param hasWaitingCustomer status of whether there is a customer waiting in line for this server
      * @param nextAvailableTime the next time at which the server is available
+     * @param maxQueue maximum queue length
+     * @param currentQueue current queue length
      */
-    public Server(int identifier, boolean isAvailable, boolean hasWaitingCustomer, double nextAvailableTime) {
+    public Server(int identifier, boolean isAvailable, boolean hasWaitingCustomer, double nextAvailableTime, int maxQueue, int currentQueue) {
         this.identifier = identifier;
         this.isAvailable = isAvailable;
         this.hasWaitingCustomer = hasWaitingCustomer;
         this.nextAvailableTime = nextAvailableTime;
+        this.maxQueue = maxQueue;
+        this.currentQueue = currentQueue;
     }
 
     /**
@@ -33,6 +39,22 @@ public class Server {
         this.isAvailable = true;
         this.hasWaitingCustomer = false;
         this.nextAvailableTime = 0;
+        this.maxQueue = 1;
+        this.currentQueue = 0;
+    }
+
+    /**
+     * Constructor for instantiating a new server with maximum queues for the start base.
+     * @param identifier server ID of the server
+     * @param maxQueue maximum queue length
+     */
+    public Server(int identifier, int maxQueue) {
+        this.identifier = identifier;
+        this.isAvailable = true;
+        this.hasWaitingCustomer = false;
+        this.nextAvailableTime = 0;
+        this.maxQueue = maxQueue;
+        this.currentQueue = 0;
     }
 
     public int getIdentifier() {
@@ -51,16 +73,28 @@ public class Server {
         return this.nextAvailableTime;
     }
 
+    public int getCurrentQueue() {
+        return this.currentQueue;
+    }
+
     public Server setIsAvailable(boolean bool) {
-        return new Server(this.identifier, bool, this.hasWaitingCustomer, this.nextAvailableTime);
+        return new Server(this.identifier, bool, this.hasWaitingCustomer, this.nextAvailableTime, this.maxQueue, this.currentQueue);
     }
 
     public Server setHasWaitingCustomer(boolean bool) {
-        return new Server(this.identifier, this.isAvailable, bool, this.nextAvailableTime);
+        return new Server(this.identifier, this.isAvailable, bool, this.nextAvailableTime, this.maxQueue, this.currentQueue);
     }
 
     public Server setNextAvailableTime(double time) {
-        return new Server(this.identifier, this.isAvailable, this.hasWaitingCustomer, time);
+        return new Server(this.identifier, this.isAvailable, this.hasWaitingCustomer, time, this.maxQueue, this.currentQueue);
+    }
+
+    public Server addToQueue(int number) {
+        return new Server(this.identifier, this.isAvailable, this.hasWaitingCustomer, this.nextAvailableTime, this.maxQueue, this.currentQueue + number);
+    }
+
+    public boolean isWaitable() {
+        return (maxQueue - currentQueue) > 0;
     }
 
     @Override
