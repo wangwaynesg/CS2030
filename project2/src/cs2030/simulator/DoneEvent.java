@@ -1,21 +1,41 @@
 package cs2030.simulator;
 
 public class DoneEvent extends Event {
-    private final int index;
+    private final Server eventServer;
 
-    public DoneEvent(Customer customer, int index, double startTime) {
-        super(customer, startTime, 4, shop -> {
-            Server server = shop.find(x -> index == x.getIdentifier()).get();
-            if (!server.getHasWaitingCustomer()) {
-                server = server.setIsAvailable(true);
+    public DoneEvent(Customer customer, double startTime, Server server) {
+        super(customer, startTime, 5, server, shop -> {
+            Server newServer = shop.find(x -> x.getIdentifier() == server.getIdentifier()).get();
+            Customer nextCustomer = newServer.peek();
+
+            if (newServer.hasQueue()) {
+                newServer = new Server(newServer.getIdentifier(),
+                        false,
+                        newServer.hasWaitingCustomer(),
+                        newServer.getNextAvailableTime(),
+                        newServer.getMaxQueue(),
+                        newServer.getQueue(),
+                        newServer.isHuman());
+                return Pair.of(shop.replace(newServer),
+                        new DoneEvent(nextCustomer, newServer.getNextAvailableTime(), newServer));
+            } else {
+                newServer = new Server(newServer.getIdentifier(),
+                        true,
+                        false,
+                        newServer.getNextAvailableTime(),
+                        newServer.getMaxQueue(),
+                        newServer.getQueue(),
+                        newServer.isHuman());
+                return Pair.of(shop.replace(newServer),
+                        new DoneEvent(customer, newServer.getNextAvailableTime(), newServer));
             }
-            return Pair.of(shop.replace(server), null);
         });
-        this.index = index;
+        this.eventServer = server;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " done serving by server " + index;
+        return super.toString() + " done serving by " +
+                (eventServer.isHuman() ? "server " : "self-check ") + eventServer.getIdentifier();
     }
 }

@@ -1,35 +1,34 @@
 package cs2030.simulator;
 
 public class ServeEvent extends Event {
-    private final int index;
+    private final Server eventServer;
 
-    public ServeEvent(Customer customer, int index) {
-        super(customer, customer.getArrivalTime(), 2, shop -> {
-            Server server = shop.find(x -> index == x.getIdentifier()).get();
-            server = server.setHasWaitingCustomer(false);
-            server = server.setNextAvailableTime(server.getNextAvailableTime() + 1);
-            return Pair.of(shop, new DoneEvent(customer, index, server.getNextAvailableTime()));
-        });
-        this.index = index;
-    }
+    public ServeEvent(Customer customer, double startTime, Server server) {
+        super(customer, startTime, 2, shop -> {
+            Server newServer = shop.find(x -> x.getIdentifier() == server.getIdentifier()).get();
+            double serviceTime = customer.getServiceTime();
+            double nextAvailableTime = startTime + serviceTime;
 
-    public ServeEvent(Customer customer, int index, double startTime, RNG rng) {
-        super(customer, startTime, 2, rng, shop -> {
-            Server server = shop.find(x -> index == x.getIdentifier()).get();
-            if (server.getCurrentQueue() > 0) {
-                server = server.addToQueue(-1);
+            if (newServer.hasQueue()) {
+                newServer.poll();
             }
-            if (server.getCurrentQueue() == 0) {
-                server = server.setHasWaitingCustomer(false);
-            }
-            server = server.setNextAvailableTime(server.getNextAvailableTime() + rng.genServiceTime());
-            return Pair.of(shop.replace(server), new DoneEvent(customer, index, server.getNextAvailableTime()));
+
+            newServer = new Server(newServer.getIdentifier(),
+                    false,
+                    newServer.hasQueue(),
+                    startTime + serviceTime,
+                    newServer.getMaxQueue(),
+                    newServer.getQueue(),
+                    newServer.isHuman());
+
+            return Pair.of(shop.replace(newServer), new DoneEvent(customer, nextAvailableTime, newServer));
         });
-        this.index = index;
+        this.eventServer = server;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " served by server " + index;
+        return super.toString() + " served by " +
+                (eventServer.isHuman() ? "server " : "self-check ") + eventServer.getIdentifier();
     }
 }

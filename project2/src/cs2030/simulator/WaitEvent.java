@@ -1,29 +1,27 @@
 package cs2030.simulator;
 
 public class WaitEvent extends Event {
-    private final int index;
+    private final Server eventServer;
 
-    public WaitEvent(Customer customer, int index) {
-        super(customer, customer.getArrivalTime(), 0, shop -> {
-            Server server = shop.find(x -> index == x.getIdentifier()).get();
-            server = server.setNextAvailableTime(Math.max(customer.getArrivalTime(), server.getNextAvailableTime()));
-            return Pair.of(shop, new ServeEvent(customer, index));
+    public WaitEvent(Customer customer, double startTime, Server server) {
+        super(customer, startTime, 0, shop -> {
+            Server newServer = shop.find(x -> x.getIdentifier() == server.getIdentifier()).get();
+            newServer = newServer.addToQueue(customer);
+            newServer = new Server(newServer.getIdentifier(),
+                    newServer.isAvailable(),
+                    true,
+                    newServer.getNextAvailableTime(),
+                    newServer.getMaxQueue(),
+                    newServer.getQueue(),
+                    newServer.isHuman());
+            return Pair.of(shop.replace(newServer), new ServeEvent(customer, newServer.getNextAvailableTime(), newServer));
         });
-        this.index = index;
-    }
-
-    public WaitEvent(Customer customer, int index, RNG rng) {
-        super(customer, customer.getArrivalTime(), 0, rng, shop -> {
-            Server server = shop.find(x -> index == x.getIdentifier()).get();
-            server = server.setNextAvailableTime(Math.max(customer.getArrivalTime(), server.getNextAvailableTime()));
-            return Pair.of(shop.replace(server),
-                    new ServeEvent(customer, index, server.getNextAvailableTime(), rng));
-        });
-        this.index = index;
+        this.eventServer = server;
     }
 
     @Override
     public String toString() {
-        return super.toString() + " waits to be served by server " + index;
+        return super.toString() + " waits to be served by "
+                + (eventServer.isHuman() ? "server " : "self-check ") + eventServer.getIdentifier();
     }
 }
