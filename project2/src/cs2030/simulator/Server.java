@@ -97,7 +97,7 @@ public class Server {
      * @return boolean whether the server is queueable
      */
     public boolean queueable() {
-        return (this.queue.size() > 0 && this.queue.size() < this.maxQueue);
+        return this.queue.size() > 0 && this.queue.size() < this.maxQueue;
     }
 
     /**

@@ -55,8 +55,8 @@ public class Main {
         int customersLeft = 0;
         double totalWaitingTime = 0;
 
-        int seed = Integer.parseInt(args[0]);
-        int numOfServers = Integer.parseInt(args[1]);
+//        int seed = Integer.parseInt(args[0]);
+//        int numOfServers = Integer.parseInt(args[1]);
         int numOfSelfCheckout = 0;
         int maxQueue = 1;
         int numOfCustomers;
@@ -67,47 +67,57 @@ public class Main {
         double probabilityRest = 0;
         double probabilityGreedy = 0;
 
+        int seed = 1;
+        int numOfServers = 1;
+        numOfSelfCheckout = 2;
+        maxQueue = 2;
+        numOfCustomers = 20;
+        arrivalRate = 1;
+        serviceRate = 0.1;
+        restingRate = 0.1;
+        probabilityRest = 0.5;
+
         // Parse input
-        switch (args.length) {
-        case 5:
-            numOfCustomers = Integer.parseInt(args[2]);
-            arrivalRate = Double.parseDouble(args[3]);
-            serviceRate = Double.parseDouble(args[4]);
-            break;
-        case 6:
-            maxQueue = Integer.parseInt(args[2]);
-            numOfCustomers = Integer.parseInt(args[3]);
-            arrivalRate = Double.parseDouble(args[4]);
-            serviceRate = Double.parseDouble(args[5]);
-            break;
-        case 8:
-            maxQueue = Integer.parseInt(args[2]);
-            numOfCustomers = Integer.parseInt(args[3]);
-            arrivalRate = Double.parseDouble(args[4]);
-            serviceRate = Double.parseDouble(args[5]);
-            restingRate = Double.parseDouble(args[6]);
-            probabilityRest = Double.parseDouble(args[7]);
-            break;
-        case 9:
-            numOfSelfCheckout = Integer.parseInt(args[2]);
-            maxQueue = Integer.parseInt(args[3]);
-            numOfCustomers = Integer.parseInt(args[4]);
-            arrivalRate = Double.parseDouble(args[5]);
-            serviceRate = Double.parseDouble(args[6]);
-            restingRate = Double.parseDouble(args[7]);
-            probabilityRest = Double.parseDouble(args[8]);
-            break;
-        default:
-            numOfSelfCheckout = Integer.parseInt(args[2]);
-            maxQueue = Integer.parseInt(args[3]);
-            numOfCustomers = Integer.parseInt(args[4]);
-            arrivalRate = Double.parseDouble(args[5]);
-            serviceRate = Double.parseDouble(args[6]);
-            restingRate = Double.parseDouble(args[7]);
-            probabilityRest = Double.parseDouble(args[8]);
-            probabilityGreedy = Double.parseDouble(args[9]);
-            break;
-        }
+//        switch (args.length) {
+//        case 5:
+//            numOfCustomers = Integer.parseInt(args[2]);
+//            arrivalRate = Double.parseDouble(args[3]);
+//            serviceRate = Double.parseDouble(args[4]);
+//            break;
+//        case 6:
+//            maxQueue = Integer.parseInt(args[2]);
+//            numOfCustomers = Integer.parseInt(args[3]);
+//            arrivalRate = Double.parseDouble(args[4]);
+//            serviceRate = Double.parseDouble(args[5]);
+//            break;
+//        case 8:
+//            maxQueue = Integer.parseInt(args[2]);
+//            numOfCustomers = Integer.parseInt(args[3]);
+//            arrivalRate = Double.parseDouble(args[4]);
+//            serviceRate = Double.parseDouble(args[5]);
+//            restingRate = Double.parseDouble(args[6]);
+//            probabilityRest = Double.parseDouble(args[7]);
+//            break;
+//        case 9:
+//            numOfSelfCheckout = Integer.parseInt(args[2]);
+//            maxQueue = Integer.parseInt(args[3]);
+//            numOfCustomers = Integer.parseInt(args[4]);
+//            arrivalRate = Double.parseDouble(args[5]);
+//            serviceRate = Double.parseDouble(args[6]);
+//            restingRate = Double.parseDouble(args[7]);
+//            probabilityRest = Double.parseDouble(args[8]);
+//            break;
+//        default:
+//            numOfSelfCheckout = Integer.parseInt(args[2]);
+//            maxQueue = Integer.parseInt(args[3]);
+//            numOfCustomers = Integer.parseInt(args[4]);
+//            arrivalRate = Double.parseDouble(args[5]);
+//            serviceRate = Double.parseDouble(args[6]);
+//            restingRate = Double.parseDouble(args[7]);
+//            probabilityRest = Double.parseDouble(args[8]);
+//            probabilityGreedy = Double.parseDouble(args[9]);
+//            break;
+//        }
 
         RNG rng = new RNG(seed, arrivalRate, serviceRate, restingRate);
         List<Double> arrivalTimes = getArrivalTimes(numOfCustomers, rng);
